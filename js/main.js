@@ -1,6 +1,6 @@
 // Load the map and data files
 Promise.all([
-    d3.json("data/countries.json"),
+    d3.json("data/countries.geojson"),
     d3.csv("data/cross-country-literacy-rates.csv")
 ]).then(function(files) {
     const geoData = files[0];
