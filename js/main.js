@@ -451,3 +451,18 @@ function updateBubbleChart(data) {
         });
     }
 
+
+// Event listeners for switching between charts
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('switch-to-bubble').addEventListener('click', function() {
+        console.log('Show Bubble Chart button clicked');
+        document.getElementById('line-chart-container').style.display = 'none';
+        document.getElementById('bubble-chart-container').style.display = 'block';
+    });
+
+    document.getElementById('switch-to-line').addEventListener('click', function() {
+        console.log('Show Line Chart button clicked');
+        document.getElementById('bubble-chart-container').style.display = 'none';
+        document.getElementById('line-chart-container').style.display = 'block';
+    });
+});
