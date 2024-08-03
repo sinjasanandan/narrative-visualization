@@ -67,7 +67,7 @@ svg.append("text")
     .attr("class", "x-axis-label")
     .attr("text-anchor", "middle")
     .attr("x", width / 2)
-    .attr("y", height + margin.bottom - 10)
+    .attr("y", height + margin.bottom + 20)
     .text("Year");
 
 // Add y-axis label
@@ -77,7 +77,7 @@ svg.append("text")
     .attr("transform", "rotate(-90)")
     .attr("x", -height / 2)
     .attr("y", -margin.left + 20)
-    .text("Internet Usage Across Population");
+    .text("% Internet Usage Among Population");
 
 // Line generator function
 const line = d3.line()
@@ -147,15 +147,22 @@ function updateChart(country, data) {
 
     points.exit().remove();
 
-    // Add tooltip behavior
+    // Add tooltip behavior and make it clickable
     svg.selectAll(".point")
         .on("mouseover", function(event, d) {
             tooltip.transition().duration(200).style("opacity", .9);
-            tooltip.html(`Year: ${d.Year}<br>Internet Usage: ${d['Internet Users(%)']}%`)
+            tooltip.html(`Year: ${d.Year}<br>Internet Usage: ${d['Internet Users(%)'].toFixed(3)}%`)
+                .style("left", (event.pageX + 5) + "px")
+                .style("top", (event.pageY - 28) + "px");
+        })
+        .on("click", function(event, d) {
+            tooltip.transition().duration(200).style("opacity", .9);
+            tooltip.html(`Year: ${d.Year}<br>Internet Usage: ${d['Internet Users(%)'].toFixed(3)}%`)
                 .style("left", (event.pageX + 5) + "px")
                 .style("top", (event.pageY - 28) + "px");
         })
         .on("mouseout", function() {
             tooltip.transition().duration(500).style("opacity", 0);
         });
+
 }
