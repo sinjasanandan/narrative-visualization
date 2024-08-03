@@ -14,6 +14,16 @@ Promise.all([
         };
     }).filter(d => d.Population && d.GDP); // Keep only countries with data in both CSVs
 
+    // Populate dropdown with unique country names
+    const countries = [...new Set(internetData.map(d => d.Entity))].sort();
+    d3.select("#dropdown")
+        .selectAll("option")
+        .data(countries)
+        .enter()
+        .append("option")
+        .attr("value", d => d)
+        .text(d => d);
+
     // Initialize the charts
     const defaultCountry = "United States";
     updateLineChart(defaultCountry, internetData);
@@ -35,14 +45,15 @@ Promise.all([
     d3.select("#switch-to-line").on("click", function() {
         d3.select("#bubble-chart-container").style("display", "none");
         d3.select("#line-chart-container").style("display", "block");
-        updateLineChart(defaultCountry, internetData); // Update line chart on switch
+        const selectedCountry = d3.select("#dropdown").property("value");
+        updateLineChart(selectedCountry, internetData); // Update line chart on switch
     });
 });
 
 // Define function to update line chart
 function updateLineChart(country, data) {
     // Remove any existing SVG in the line chart container before drawing
-    d3.select("#line-chart svg").remove();
+    d3.select("#chart svg").remove();
 
     // Define margins and dimensions
     const margin = {top: 40, right: 20, bottom: 30, left: 50};
@@ -139,7 +150,7 @@ function updateLineChart(country, data) {
     points.exit().remove();
 
     // Add tooltip behavior
-    const tooltip = d3.select("body").select(".tooltip");
+    const tooltip = d3.select(".tooltip");
     if (tooltip.empty()) {
         d3.select("body").append("div")
             .attr("class", "tooltip")
