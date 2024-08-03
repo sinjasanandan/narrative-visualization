@@ -29,9 +29,19 @@
             border: 1px solid #d3d3d3;
             padding: 5px;
             border-radius: 3px;
+            pointer-events: none; /* Ensures the tooltip does not interfere with mouse events */
         }
         .x-axis-label, .y-axis-label {
             font-size: 14px;
+        }
+        #line-chart-container, #bubble-chart-container {
+            width: 800px;
+            height: 500px;
+            margin: auto;
+        }
+        button {
+            display: block;
+            margin: 20px auto;
         }
     </style>
 </head>
@@ -49,7 +59,7 @@
 
     <!-- Navigation Buttons -->
     <button id="switch-to-bubble">Show Bubble Chart</button>
-    <button id="switch-to-line">Show Line Chart</button>
+    <button id="switch-to-line" style="display: none;">Show Line Chart</button>
 
     <!-- Include D3.js -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -58,3 +68,4 @@
     <script src="js/main.js"></script>
 </body>
 </html>
+
