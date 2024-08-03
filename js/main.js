@@ -1,72 +1,98 @@
-// Load the map and data files
-Promise.all([
-    d3.json("data/countries.geojson"),
-    d3.csv("data/cross-country-literacy-rates.csv")
-]).then(function(files) {
-    const geoData = files[0];
-    const literacyData = files[1];
-
-    // Process data to get the latest literacy rate for each country
-    const latestData = {};
-
-    literacyData.forEach(d => {
-        const country = d['country code']; // Assuming this is the ISO A3 code
-        const year = +d['year'];
-        const literacyRate = +d['literacy rate'];
-
-        if (!latestData[country] || year > latestData[country].year) {
-            latestData[country] = { literacyRate: literacyRate, year: year };
-        }
+d3.csv("data/Final.csv").then(data => {
+    // Parse the data
+    data.forEach(d => {
+        d.Year = +d.Year;
+        d['Internet Users(%)'] = +d['Internet Users(%)'];
     });
 
-    // Set up the SVG and map projection
-    const width = 960, height = 600;
-
-    const projection = d3.geoMercator()
-        .scale(150)
-        .translate([width / 2, height / 1.5]);
-
-    const path = d3.geoPath().projection(projection);
-
-    const svg = d3.select("body").append("svg")
-        .attr("width", width)
-        .attr("height", height);
-
-    // Define color scale based on literacy rate
-    const colorScale = d3.scaleSequential(d3.interpolateBlues)
-        .domain([0, 100]); // assuming literacy rates are percentages
-
-    // Bind data to the map and create one path per GeoJSON feature
-    svg.append("g")
-        .selectAll("path")
-        .data(geoData.features)
-        .enter().append("path")
-        .attr("d", path)
-        .attr("fill", function(d) {
-            const countryCode = d.properties.ISO_A3;
-            const literacyRate = latestData[countryCode] ? latestData[countryCode].literacyRate : 0;
-            return colorScale(literacyRate);
-        })
-        .attr("stroke", "#ffffff")
-        .attr("stroke-width", 0.5)
-        .on("mouseover", function(event, d) {
-            const countryCode = d.properties.ISO_A3;
-            const literacyRate = latestData[countryCode] ? latestData[countryCode].literacyRate : "No data";
-            d3.select("#tooltip")
-                .style("left", (event.pageX + 10) + "px")
-                .style("top", (event.pageY - 28) + "px")
-                .select("#value")
-                .text(d.properties.NAME + ": " + literacyRate + "%");
-            d3.select("#tooltip").classed("hidden", false);
-        })
-        .on("mouseout", function() {
-            d3.select("#tooltip").classed("hidden", true);
-        });
+    // Initialize the chart with a default country
+    const defaultCountry = "United States";
+    updateChart(defaultCountry, data);
 });
 
-// Add a tooltip to the HTML file
-d3.select("body").append("div")
-    .attr("id", "tooltip")
-    .attr("class", "hidden")
-    .append("p")
-    .html("<strong id='value'></strong>");
+
+// Define margins and dimensions
+const margin = {top: 40, right: 20, bottom: 30, left: 50};
+const width = 800 - margin.left - margin.right;
+const height = 400 - margin.top - margin.bottom;
+
+// Create the SVG container
+const svg = d3.select("#chart")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// Define scales
+const xScale = d3.scaleLinear().range([0, width]);
+const yScale = d3.scaleLinear().range([height, 0]);
+
+// Define axes
+const xAxis = d3.axisBottom(xScale).tickFormat(d3.format("d")); // Format tick labels as integers (years)
+const yAxis = d3.axisLeft(yScale);
+
+// Append x and y axes
+svg.append("g")
+    .attr("class", "x-axis")
+    .attr("transform", "translate(0," + height + ")");
+
+svg.append("g")
+    .attr("class", "y-axis");
+
+// Line generator function
+const line = d3.line()
+    .x(d => xScale(d.Year))
+    .y(d => yScale(d['Internet Users(%)']));
+
+// Function to update the chart based on selected country
+function updateChart(country, data) {
+    // Filter data based on selected country
+    const filteredData = data.filter(d => d.Entity === country);
+
+    // Update scales
+    xScale.domain(d3.extent(filteredData, d => d.Year));
+    yScale.domain([0, d3.max(filteredData, d => d['Internet Users(%)'])]);
+
+    // Update axes
+    svg.select(".x-axis").call(xAxis);
+    svg.select(".y-axis").call(yAxis);
+
+    // Bind data to line path and update
+    const linePath = svg.selectAll(".line").data([filteredData]);
+
+    // Enter phase for the line path
+    linePath.enter()
+        .append("path")
+        .attr("class", "line")
+        .merge(linePath)
+        .transition()
+        .duration(1000)
+        .attr("d", line)
+        .attr("fill", "none")
+        .attr("stroke", "steelblue")
+        .attr("stroke-width", 2);
+
+    // Exit phase (if data changes significantly)
+    linePath.exit().remove();
+}
+
+// Create a dropdown menu for country selection
+const dropdown = d3.select("#dropdown")
+    .append("select")
+    .on("change", function() {
+        const selectedCountry = d3.select(this).property("value");
+        updateChart(selectedCountry, data);
+    });
+
+// Populate dropdown options with unique country names
+const countries = [...new Set(data.map(d => d.Entity))];
+dropdown.selectAll("option")
+    .data(countries)
+    .enter()
+    .append("option")
+    .attr("value", d => d)
+    .text(d => d);
+
+// Initialize the chart with the default country
+updateChart(defaultCountry, data);
