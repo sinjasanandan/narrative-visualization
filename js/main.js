@@ -1,4 +1,4 @@
-d3.csv("../data/Final.csv").then(data => {
+d3.csv("Final.csv").then(data => {
     // Parse the data
     console.log(data); 
     data.forEach(d => {
