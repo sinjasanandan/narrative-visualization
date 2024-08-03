@@ -32,13 +32,24 @@ function createChoropleth(geoData, internetUsageMap) {
     // Draw the map
     svg.selectAll("path")
         .data(geoData.features)
-        .enter().append("path")
+        .enter()
+        .append("path")
         .attr("d", path)
         .attr("fill", d => {
-            const code = d.properties.iso_a3;
-            const usage = internetUsageMap.get(code);
-            return usage ? colorScale(usage) : "#ccc"; // Default color if no data
+            const countryData = internetData.find(data => data.Entity === d.properties.name);
+            return countryData ? colorScale(countryData['Internet Users(%)']) : "#ccc";
         })
-        .attr("stroke", "#333")
-        .attr("stroke-width", 0.5);
+        .attr("stroke", "#333")  // Border color
+        .attr("stroke-width", 0.5)  // Border thickness
+        .attr("stroke-linejoin", "round");  // Smooths corners
+
+    svg.append("g")
+        .selectAll("path")
+        .data(geoData.features)
+        .enter()
+        .append("path")
+        .attr("d", path)
+        .attr("fill", "none")
+        .attr("stroke", "#333")  // Border color
+        .attr("stroke-width", 0.5);  // Border thickness
 }
