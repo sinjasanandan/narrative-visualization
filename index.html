@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,10 +7,54 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Your content here -->
     <div id="chart"></div>
     <select id="dropdown"></select>
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="js/main.js"></script>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exploring Worldwide Internet Usage</title>
+    <style>
+        /* Add your CSS here for styling */
+        .tooltip {
+            position: absolute;
+            background-color: #f9f9f9;
+            border: 1px solid #d3d3d3;
+            padding: 5px;
+            border-radius: 3px;
+        }
+        .x-axis-label, .y-axis-label {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Line Chart Container -->
+    <div id="line-chart-container">
+        <div id="chart"></div>
+        <select id="dropdown"></select>
+    </div>
+
+    <!-- Bubble Chart Container -->
+    <div id="bubble-chart-container" style="display: none;">
+        <div id="bubble-chart"></div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <button id="switch-to-bubble">Show Bubble Chart</button>
+    <button id="switch-to-line">Show Line Chart</button>
+
+    <!-- Include D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <!-- Include your JavaScript file -->
+    <script src="main.js"></script>
 </body>
 </html>
