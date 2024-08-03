@@ -18,10 +18,12 @@ d3.csv("Final.csv").then(data => {
         .text(d => d)
         .attr("value", d => d);
 
-    // Initialize the chart with a default country
+    // Set the default value for dropdown menu
     const defaultCountry = "United States";
+    d3.select("#dropdown").property("value", defaultCountry);
+
+    // Initialize the chart with the default country
     updateChart(defaultCountry, data);
-    dropdown.filter(d => d === defaultCountry).attr("selected", "selected");
 
     // Update the chart when a new country is selected
     d3.select("#dropdown").on("change", function() {
@@ -60,7 +62,7 @@ svg.append("g")
 svg.append("g")
     .attr("class", "y-axis");
 
-
+// Add x-axis label
 svg.append("text")
     .attr("class", "x-axis-label")
     .attr("text-anchor", "middle")
@@ -77,47 +79,10 @@ svg.append("text")
     .attr("y", -margin.left + 20)
     .text("Internet Usage Across Population");
 
-
 // Line generator function
 const line = d3.line()
     .x(d => xScale(d.Year))
     .y(d => yScale(d['Internet Users(%)']));
-
-    
-
-// // Function to update the chart based on selected country
-// function updateChart(country, data) {
-//     // Filter data based on selected country
-//     const filteredData = data.filter(d => d.Entity === country);
-
-//     // Update scales
-//     xScale.domain(d3.extent(filteredData, d => d.Year));
-//     yScale.domain([0, d3.max(filteredData, d => d['Internet Users(%)'])]);
-
-//     // Update axes
-//     svg.select(".x-axis").call(xAxis);
-//     svg.select(".y-axis").call(yAxis);
-
-//     // Bind data to line path and update
-//     const linePath = svg.selectAll(".line").data([filteredData]);
-
-//     // Enter phase for the line path
-//     linePath.enter()
-//         .append("path")
-//         .attr("class", "line")
-//         .merge(linePath)
-//         .transition()
-//         .duration(1000)
-//         .attr("d", line)
-//         .attr("fill", "none")
-//         .attr("stroke", "steelblue")
-//         .attr("stroke-width", 2);
-
-//     // Exit phase (if data changes significantly)
-//     linePath.exit().remove();
-// }
-
-
 
 // Create a tooltip div
 const tooltip = d3.select("body").append("div")
@@ -194,4 +159,3 @@ function updateChart(country, data) {
             tooltip.transition().duration(500).style("opacity", 0);
         });
 }
-
