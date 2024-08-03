@@ -167,6 +167,9 @@ function updateChart(country, data) {
         });
 }
 
+
+
+
 // Load and process the bubble chart data
 Promise.all([
     d3.csv("Final.csv"),
@@ -183,6 +186,9 @@ Promise.all([
         d['GDP ($ per capita)'] = +d['GDP ($ per capita)'];
         d['Literacy (%)'] = +d['Literacy (%)'];
     });
+    
+    console.log(finalData); // Check if data is loaded
+    console.log(worldData);
 
     // Merge the datasets by country
     const mergedData = finalData.map(d => {
@@ -192,7 +198,7 @@ Promise.all([
 
     // Filter to get the most recent data per country
     const latestData = d3.rollups(mergedData, v => v.sort((a, b) => b.Year - a.Year)[0], d => d.Entity).map(d => d[1]);
-
+    console.log(mergedData); 
     // Step 2: Create the Bubble Chart
     createBubbleChart(latestData);
 });
