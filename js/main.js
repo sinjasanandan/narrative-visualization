@@ -5,10 +5,29 @@ d3.csv("data/Final.csv").then(data => {
         d['Internet Users(%)'] = +d['Internet Users(%)'];
     });
 
+    // Create a list of unique countries
+    const countries = [...new Set(data.map(d => d.Entity))];
+
+    // Create the dropdown menu
+    d3.select("#dropdown")
+        .selectAll("option")
+        .data(countries)
+        .enter()
+        .append("option")
+        .text(d => d)
+        .attr("value", d => d);
+
     // Initialize the chart with a default country
     const defaultCountry = "United States";
     updateChart(defaultCountry, data);
+
+    // Update the chart when a new country is selected
+    d3.select("#dropdown").on("change", function() {
+        const selectedCountry = d3.select(this).property("value");
+        updateChart(selectedCountry, data);
+    });
 });
+
 
 
 // Define margins and dimensions
@@ -77,22 +96,22 @@ function updateChart(country, data) {
     linePath.exit().remove();
 }
 
-// Create a dropdown menu for country selection
-const dropdown = d3.select("#dropdown")
-    .append("select")
-    .on("change", function() {
-        const selectedCountry = d3.select(this).property("value");
-        updateChart(selectedCountry, data);
-    });
+// // Create a dropdown menu for country selection
+// const dropdown = d3.select("#dropdown")
+//     .append("select")
+//     .on("change", function() {
+//         const selectedCountry = d3.select(this).property("value");
+//         updateChart(selectedCountry, data);
+//     });
 
-// Populate dropdown options with unique country names
-const countries = [...new Set(data.map(d => d.Entity))];
-dropdown.selectAll("option")
-    .data(countries)
-    .enter()
-    .append("option")
-    .attr("value", d => d)
-    .text(d => d);
+// // Populate dropdown options with unique country names
+// const countries = [...new Set(data.map(d => d.Entity))];
+// dropdown.selectAll("option")
+//     .data(countries)
+//     .enter()
+//     .append("option")
+//     .attr("value", d => d)
+//     .text(d => d);
 
-// Initialize the chart with the default country
-updateChart(defaultCountry, data);
+// // Initialize the chart with the default country
+// updateChart(defaultCountry, data);
