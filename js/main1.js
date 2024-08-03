@@ -1,7 +1,7 @@
 // Load and process the line chart data
 d3.csv("Final.csv").then(data => {
     // Parse the data
-    console.log(data); 
+    // console.log(data); 
     data.forEach(d => {
         d.Year = +d.Year;
         d['Internet Users(%)'] = +d['Internet Users(%)'];
@@ -29,7 +29,7 @@ d3.csv("Final.csv").then(data => {
     // Update the chart when a new country is selected
     d3.select("#dropdown").on("change", function() {
         const selectedCountry = d3.select(this).property("value");
-        console.log("Selected country:", selectedCountry);
+        // console.log("Selected country:", selectedCountry);
         updateChart(selectedCountry, data);
     });
 });
@@ -175,20 +175,19 @@ Promise.all([
     d3.csv("Final.csv"),
     d3.csv("countries of the world.csv")
 ]).then(([finalData, worldData]) => {
-    // Parse the data
+    // Parse and clean the data
     finalData.forEach(d => {
+        d.Entity = d.Entity.trim(); // Trim trailing spaces
         d.Year = +d.Year;
         d['Internet Users(%)'] = +d['Internet Users(%)'];
     });
 
     worldData.forEach(d => {
+        d.Country = d.Country.trim().replace(/['"]+/g, ''); // Trim spaces and remove quotes
         d.Population = +d.Population;
         d['GDP ($ per capita)'] = +d['GDP ($ per capita)'];
         d['Literacy (%)'] = +d['Literacy (%)'];
     });
-
-    // console.log(finalData); // Check if data is loaded
-    // console.log(worldData);
 
     // Merge the datasets by country
     const mergedData = finalData.map(d => {
@@ -199,7 +198,7 @@ Promise.all([
     // Filter to get the most recent data per country
     const latestData = d3.rollups(mergedData, v => v.sort((a, b) => b.Year - a.Year)[0], d => d.Entity).map(d => d[1]);
     console.log(latestData); 
-    // Step 2: Create the Bubble Chart
+    // Create the Bubble Chart
     createBubbleChart(latestData);
 });
 
