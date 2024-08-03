@@ -1,5 +1,6 @@
 d3.csv("data/Final.csv").then(data => {
     // Parse the data
+    console.log(data); 
     data.forEach(d => {
         d.Year = +d.Year;
         d['Internet Users(%)'] = +d['Internet Users(%)'];
