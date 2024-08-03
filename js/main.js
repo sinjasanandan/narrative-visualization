@@ -28,8 +28,6 @@ d3.csv("data/Final.csv").then(data => {
     });
 });
 
-
-
 // Define margins and dimensions
 const margin = {top: 40, right: 20, bottom: 30, left: 50};
 const width = 800 - margin.left - margin.right;
@@ -95,23 +93,3 @@ function updateChart(country, data) {
     // Exit phase (if data changes significantly)
     linePath.exit().remove();
 }
-
-// // Create a dropdown menu for country selection
-// const dropdown = d3.select("#dropdown")
-//     .append("select")
-//     .on("change", function() {
-//         const selectedCountry = d3.select(this).property("value");
-//         updateChart(selectedCountry, data);
-//     });
-
-// // Populate dropdown options with unique country names
-// const countries = [...new Set(data.map(d => d.Entity))];
-// dropdown.selectAll("option")
-//     .data(countries)
-//     .enter()
-//     .append("option")
-//     .attr("value", d => d)
-//     .text(d => d);
-
-// // Initialize the chart with the default country
-// updateChart(defaultCountry, data);
