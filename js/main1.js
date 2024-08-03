@@ -169,6 +169,121 @@ function updateChart(country, data) {
 
 
 
+// Step 1: Load both datasets and merge them
+Promise.all([
+    d3.csv("Final.csv"),
+    d3.csv("countries of the world.csv")
+]).then(([finalData, worldData]) => {
+
+    // Parse the data
+    finalData.forEach(d => {
+        d.Year = +d.Year;
+        d['Internet Users(%)'] = +d['Internet Users(%)'];
+    });
+
+    worldData.forEach(d => {
+        d.Population = +d.Population;
+        d['GDP ($ per capita)'] = +d['GDP ($ per capita)'];
+        d['Literacy (%)'] = +d['Literacy (%)'];
+    });
+
+    // Merge the datasets by country
+    const mergedData = finalData.map(d => {
+        const worldInfo = worldData.find(w => w.Country === d.Entity);
+        return worldInfo ? {...d, ...worldInfo} : null;
+    }).filter(d => d);
+
+    // Filter to get the most recent data per country
+    const latestData = d3.rollups(mergedData, v => v.sort((a, b) => b.Year - a.Year)[0], d => d.Entity).map(d => d[1]);
+
+    // Step 2: Create the Bubble Chart
+    createBubbleChart(latestData);
+});
+
+// Function to create the bubble chart
+function createBubbleChart(data) {
+    // Define margins and dimensions
+    const margin = {top: 40, right: 20, bottom: 50, left: 60};
+    const width = 800 - margin.left - margin.right;
+    const height = 400 - margin.top - margin.bottom;
+
+    // Create the SVG container
+    const svg = d3.select("#bubbleChart")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    // Define scales
+    const xScale = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d['GDP ($ per capita)'])])
+        .range([0, width]);
+
+    const yScale = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d['Internet Users(%)'])])
+        .range([height, 0]);
+
+    const rScale = d3.scaleSqrt()
+        .domain([0, d3.max(data, d => d.Population)])
+        .range([5, 30]);
+
+    // Define axes
+    const xAxis = d3.axisBottom(xScale);
+    const yAxis = d3.axisLeft(yScale);
+
+    // Append x and y axes
+    svg.append("g")
+        .attr("class", "x-axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis)
+        .append("text")
+        .attr("class", "axis-label")
+        .attr("x", width / 2)
+        .attr("y", 40)
+        .style("text-anchor", "middle")
+        .text("GDP ($ per capita)");
+
+    svg.append("g")
+        .attr("class", "y-axis")
+        .call(yAxis)
+        .append("text")
+        .attr("class", "axis-label")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -height / 2)
+        .attr("y", -50)
+        .style("text-anchor", "middle")
+        .text("% Internet Users Among Population");
+
+    // Add the bubbles
+    svg.selectAll(".bubble")
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("class", "bubble")
+        .attr("cx", d => xScale(d['GDP ($ per capita)']))
+        .attr("cy", d => yScale(d['Internet Users(%)']))
+        .attr("r", d => rScale(d.Population))
+        .attr("fill", "steelblue")
+        .attr("opacity", 0.7);
+
+    // Add tooltip behavior
+    const tooltip = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
+    svg.selectAll(".bubble")
+        .on("mouseover", function(event, d) {
+            tooltip.transition().duration(200).style("opacity", .9);
+            tooltip.html(`${d.Entity}<br>GDP: $${d['GDP ($ per capita)']}<br>Internet Usage: ${d['Internet Users(%)']}%<br>Population: ${d.Population}`)
+                .style("left", (event.pageX + 5) + "px")
+                .style("top", (event.pageY - 28) + "px");
+        })
+        .on("mouseout", function() {
+            tooltip.transition().duration(500).style("opacity", 0);
+        });
+}
+
 
 
 
