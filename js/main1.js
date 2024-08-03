@@ -186,7 +186,7 @@ Promise.all([
         d['GDP ($ per capita)'] = +d['GDP ($ per capita)'];
         d['Literacy (%)'] = +d['Literacy (%)'];
     });
-    
+
     console.log(finalData); // Check if data is loaded
     console.log(worldData);
 
@@ -286,3 +286,20 @@ function createBubbleChart(data) {
             tooltip.transition().duration(500).style("opacity", 0);
         });
 }
+
+
+// Add these event listeners after the charts have been created
+
+d3.select("#switch-to-bubble").on("click", function() {
+    d3.select("#line-chart-container").style("display", "none");
+    d3.select("#bubble-chart-container").style("display", "block");
+    d3.select("#switch-to-line").style("display", "block");
+    d3.select("#switch-to-bubble").style("display", "none");
+});
+
+d3.select("#switch-to-line").on("click", function() {
+    d3.select("#line-chart-container").style("display", "block");
+    d3.select("#bubble-chart-container").style("display", "none");
+    d3.select("#switch-to-line").style("display", "none");
+    d3.select("#switch-to-bubble").style("display", "block");
+});
