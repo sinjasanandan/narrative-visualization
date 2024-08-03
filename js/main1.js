@@ -187,8 +187,8 @@ Promise.all([
         d['Literacy (%)'] = +d['Literacy (%)'];
     });
 
-    console.log(finalData); // Check if data is loaded
-    console.log(worldData);
+    // console.log(finalData); // Check if data is loaded
+    // console.log(worldData);
 
     // Merge the datasets by country
     const mergedData = finalData.map(d => {
@@ -198,7 +198,7 @@ Promise.all([
 
     // Filter to get the most recent data per country
     const latestData = d3.rollups(mergedData, v => v.sort((a, b) => b.Year - a.Year)[0], d => d.Entity).map(d => d[1]);
-    console.log(mergedData); 
+    console.log(latestData); 
     // Step 2: Create the Bubble Chart
     createBubbleChart(latestData);
 });
