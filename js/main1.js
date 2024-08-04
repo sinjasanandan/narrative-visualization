@@ -93,58 +93,58 @@ const tooltip = d3.select("body").append("div")
     .style("padding", "5px")
     .style("border-radius", "3px");
 
-// Define annotations
-const annotations = [
-    {
-        note: {
-            label: "This narrative visualization explores the adoption of the Internet worldwide since its invention in 1983.",
-            align: "middle",
-            wrap: 200
-        },
-        x: width / 2,
-        y: margin.top - 50,
-        dx: 0,
-        dy: 0,
-        color: "black",
-        type: d3.annotationLabel
-    },
-    {
-        note: {
-            label: "In this line graph, you can observe the progression of Internet usage as a percentage of a country's population from 1990 to the present.",
-            align: "middle",
-            wrap: 200
-        },
-        x: width / 2,
-        y: margin.top + 20,
-        dx: 0,
-        dy: 0,
-        color: "black",
-        type: d3.annotationLabel
-    },
-    {
-        note: {
-            label: "Use the dropdown menu to select a specific country and view its Internet usage trends.",
-            align: "middle",
-            wrap: 200
-        },
-        x: width / 2,
-        y: height - margin.bottom + 60,
-        dx: 0,
-        dy: 0,
-        color: "black",
-        type: d3.annotationLabel
-    }
-];
+// // Define annotations
+// const annotations = [
+//     {
+//         note: {
+//             label: "This narrative visualization explores the adoption of the Internet worldwide since its invention in 1983.",
+//             align: "middle",
+//             wrap: 200
+//         },
+//         x: width / 2,
+//         y: margin.top - 50,
+//         dx: 0,
+//         dy: 0,
+//         color: "black",
+//         type: d3.annotationLabel
+//     },
+//     {
+//         note: {
+//             label: "In this line graph, you can observe the progression of Internet usage as a percentage of a country's population from 1990 to the present.",
+//             align: "middle",
+//             wrap: 200
+//         },
+//         x: width / 2,
+//         y: margin.top + 20,
+//         dx: 0,
+//         dy: 0,
+//         color: "black",
+//         type: d3.annotationLabel
+//     },
+//     {
+//         note: {
+//             label: "Use the dropdown menu to select a specific country and view its Internet usage trends.",
+//             align: "middle",
+//             wrap: 200
+//         },
+//         x: width / 2,
+//         y: height - margin.bottom + 60,
+//         dx: 0,
+//         dy: 0,
+//         color: "black",
+//         type: d3.annotationLabel
+//     }
+// ];
 
-// Create the annotation object
-const makeAnnotations = d3.annotation()
-    .type(d3.annotationLabel)
-    .annotations(annotations);
+// // Create the annotation object
+// const makeAnnotations = d3.annotation()
+//     .type(d3.annotationLabel)
+//     .annotations(annotations);
 
-// Append the annotations to the SVG
-svg.append("g")
-    .attr("class", "annotation-group")
-    .call(makeAnnotations);
+// // Append the annotations to the SVG
+// svg.append("g")
+//     .attr("class", "annotation-group")
+//     .call(makeAnnotations);
 
 // Function to update the line chart based on the selected country
 function updateChart(country, data) {
