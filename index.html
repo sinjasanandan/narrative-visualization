@@ -10,35 +10,33 @@
 <body>
     <h1>Visualizing Worldwide Internet Usage</h1>
 
-    
+    <!-- Choropleth Map Container -->
+    <div id="choropleth-map-container" style="position: relative;">
+        <div id="map-annotations-container"></div>
+        <div id="choropleth-map"></div>
+        <button id="switch-to-line">Show Next</button>
+    </div>
+
 
     <!-- Line Chart Container -->
-    <div id="line-chart-container">
+    <div id="line-chart-container" style="display: none;">
         <div id="line-annotations-container"></div>
         <div id="chart"></div>
         <select id="dropdown"></select>
-        <button id="switch-to-map">Show Next</button>
-    </div>
-
-    <!-- Choropleth Map Container -->
-    <div id="choropleth-map-container" style="
-        position: relative; 
-        display: none;">
-        <div id="map-annotations-container"></div>
-        <div id="choropleth-map"></div>
         <button id="switch-to-bubble" style="display: none;">Show Next</button>
     </div>
 
+    
 
     <!-- Bubble Chart Container -->
     <div id="bubble-chart-container" style="display: none;">
         <div id="bubble-annotations-container"></div>
         <div id="bubble-chart"></div>
-        <button id="switch-to-line" style="display: none;">Start Over</button>
+        <button id="switch-to-map" style="display: none;">Start Over</button>
     </div>
 
     <!-- Navigation Buttons -->
-     <!-- line chart >> map >> bubble >> start from beg -->
+     <!-- map >> line chart >> bubble >> start from beg -->
     
     
     

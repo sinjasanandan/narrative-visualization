@@ -149,7 +149,7 @@ function updateChart(country, data) {
 
     points.exit().remove();
 
-    // Add tooltip behavior and make it clickable
+    // Add tooltip behavior 
     svg.selectAll(".point")
         .on("mouseover", function(event, d) {
             tooltip.transition().duration(200).style("opacity", .9);
@@ -440,23 +440,26 @@ function addMapAnnotations() {
 
 
 // Add these event listeners after the charts have been created
-d3.select("#switch-to-map").on("click", function() {
-    d3.select("#line-chart-container").style("display", "none");
-    d3.select("#choropleth-map-container").style("display", "block");
+//      <!-- map >> line chart >> bubble >> start from beg -->
+d3.select("#switch-to-line").on("click", function() {
+    d3.select("#line-chart-container").style("display", "block");
+    d3.select("#choropleth-map-container").style("display", "none");
+    d3.select("#switch-to-line").style("display", "none");
     d3.select("#switch-to-bubble").style("display", "block");
-    d3.select("#switch-to-map").style("display", "none");
 });
 
 d3.select("#switch-to-bubble").on("click", function() {
-    d3.select("#choropleth-map-container").style("display", "none");
+    d3.select("#line-chart-container").style("display", "none");
     d3.select("#bubble-chart-container").style("display", "block");
-    d3.select("#switch-to-line").style("display", "block");
+    d3.select("#switch-to-map").style("display", "block");
     d3.select("#switch-to-bubble").style("display", "none");
 });
 
-d3.select("#switch-to-line").on("click", function() {
-    d3.select("#line-chart-container").style("display", "block");
+d3.select("#switch-to-map").on("click", function() {
+    d3.select("#choropleth-map-container").style("display", "block");
     d3.select("#bubble-chart-container").style("display", "none");
-    d3.select("#switch-to-line").style("display", "none");
-    d3.select("#switch-to-map").style("display", "block");
+    d3.select("#switch-to-line").style("display", "block");
+    d3.select("#switch-to-map").style("display", "none");
 });
+
+
