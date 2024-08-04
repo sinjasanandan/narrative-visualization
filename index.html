@@ -30,13 +30,14 @@
     </style>
 </head>
 <body>
-    <div id="choropleth-map"></div>
-
     <!-- Line Chart Container -->
     <div id="line-chart-container">
         <div id="chart"></div>
         <select id="dropdown"></select>
     </div>
+
+    <!-- Choropleth Map Container -->
+    <div id="choropleth-map-container" style="display: none;"></div>
 
     <!-- Bubble Chart Container -->
     <div id="bubble-chart-container" style="display: none;">
@@ -44,8 +45,10 @@
     </div>
 
     <!-- Navigation Buttons -->
-    <button id="switch-to-bubble">Show Bubble Chart</button>
-    <button id="switch-to-line" style="display: none;">Show Line Chart</button>
+     <!-- line chart >> map >> bubble >> start from beg -->
+    <button id="switch-to-map">Show Map</button>
+    <button id="switch-to-bubble" style="display: none;">Show Next</button>
+    <button id="switch-to-line" style="display: none;">Start Over</button>
 
     <!-- Include D3.js -->
     <script src="https://d3js.org/d3.v7.min.js"></script>

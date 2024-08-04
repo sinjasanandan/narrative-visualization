@@ -287,10 +287,114 @@ function createBubbleChart(data) {
 }
 
 
+
+
+// Choropleth map
+Promise.all([
+    d3.csv("Final.csv"),
+    d3.json("countries.geojson")
+]).then(([data, geoData]) => {
+    // Process the data
+    const latestData = d3.rollups(data, v => v.sort((a, b) => b.Year - a.Year)[0], d => d.Code).map(d => d[1]);
+
+    // Create a map of country codes to internet usage percentages
+    const internetUsageMap = new Map(latestData.map(d => [d.Code, +d['Internet Users(%)']]));
+
+
+
+    // Define a color scale
+    const colorScale = d3.scaleSequential(d3.interpolateBlues)
+        .domain([0, d3.max(Array.from(internetUsageMap.values()))]);
+
+
+    // Render the map and legend
+    const svg = createChoropleth(geoData, internetUsageMap);
+    // addHorizontalLegend(svg, d3.scaleSequential(d3.interpolateBlues)
+    //     .domain([0, d3.max(Array.from(internetUsageMap.values()))]), svg.attr("width"));
+    addCategoricalLegend(svg, colorScale, svg.attr("width"));
+});
+
+function createChoropleth(geoData, internetUsageMap) {
+    const width = 1000;
+    const height = 640;
+
+    const svg = d3.select("#choropleth-map")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    // Define a projection and path generator
+    const projection = d3.geoMercator().scale(150).translate([width / 2, height / 1.4]);
+    const path = d3.geoPath().projection(projection);
+
+    // Define a color scale
+    const colorScale = d3.scaleSequential(d3.interpolateBlues)
+        .domain([0, d3.max(Array.from(internetUsageMap.values()))]);
+
+    // Draw the map
+    const countries = svg.selectAll("path")
+        .data(geoData.features)
+        .enter().append("path")
+        .attr("d", path)
+        .attr("fill", d => {
+            const code = d.properties.iso_a3;
+            const usage = internetUsageMap.get(code);
+            return usage ? colorScale(usage) : "#ccc"; // Default color if no data
+        })
+        .attr("stroke", "#333")
+        .attr("stroke-width", 0.5);
+
+
+    svg.append("g")
+        .selectAll("path")
+        .data(geoData.features)
+        .enter()
+        .append("path")
+        .attr("d", path)
+        .attr("fill", "none")
+        .attr("stroke", "#333")  // Border color
+        .attr("stroke-width", 0.5);  // Border thickness
+
+    // Add tooltips
+    const tooltip = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0)
+        .style("position", "absolute")
+        .style("background-color", "#f9f9f9")
+        .style("border", "1px solid #d3d3d3")
+        .style("padding", "5px")
+        .style("border-radius", "3px");
+
+    countries.on("mouseover", function(event, d) {
+            tooltip.transition().duration(200).style("opacity", .9);
+            const code = d.properties.iso_a3;
+            const usage = internetUsageMap.get(code);
+            const countryName = d.properties.name;
+            tooltip.html(`${countryName}<br>Internet Usage: ${usage ? usage.toFixed(2) : 'No Data'}%`)
+                .style("left", (event.pageX + 5) + "px")
+                .style("top", (event.pageY - 28) + "px");
+        })
+        .on("mouseout", function() {
+            tooltip.transition().duration(500).style("opacity", 0);
+        });
+
+    return svg;
+}
+
+
+
+
+
 // Add these event listeners after the charts have been created
+d3.select("#switch-to-map").on("click", function() {
+    d3.select("#line-chart-container").style("display", "none");
+    d3.select("#choropleth-map-container").style("display", "block");
+    d3.select("#switch-to-bubble").style("display", "block");
+    d3.select("#switch-to-map").style("display", "none");
+});
 
 d3.select("#switch-to-bubble").on("click", function() {
-    d3.select("#line-chart-container").style("display", "none");
+    d3.select("#choropleth-map-container").style("display", "none");
     d3.select("#bubble-chart-container").style("display", "block");
     d3.select("#switch-to-line").style("display", "block");
     d3.select("#switch-to-bubble").style("display", "none");
@@ -300,5 +404,5 @@ d3.select("#switch-to-line").on("click", function() {
     d3.select("#line-chart-container").style("display", "block");
     d3.select("#bubble-chart-container").style("display", "none");
     d3.select("#switch-to-line").style("display", "none");
-    d3.select("#switch-to-bubble").style("display", "block");
+    d3.select("#switch-to-map").style("display", "block");
 });
