@@ -140,6 +140,13 @@ Promise.all([
     // Create a map of country codes to internet usage percentages
     const internetUsageMap = new Map(latestData.map(d => [d.Code, +d['Internet Users(%)']]));
 
+
+
+    // Define a color scale
+    const colorScale = d3.scaleSequential(d3.interpolateBlues)
+        .domain([0, d3.max(Array.from(internetUsageMap.values()))]);
+
+
     // Render the map and legend
     const svg = createChoropleth(geoData, internetUsageMap);
     // addHorizontalLegend(svg, d3.scaleSequential(d3.interpolateBlues)
@@ -263,23 +270,26 @@ function addCategoricalLegend(svg, colorScale, width) {
     const legendWidth = 300; // Width of the legend
     const legendHeight = 20; // Height of each swatch
     const categories = [0, 20, 40, 60, 80, 100]; // Define the percentage categories
-    const colorDomain = colorScale.domain();
     
     const legend = svg.append("g")
         .attr("class", "legend")
-        .attr("transform", `translate(${400}, ${svg.attr("height") - 50})`);
+        .attr("transform", `translate(400, ${svg.attr("height") - 50})`);
 
+    // Add debugging: Check if legend group is added
+    console.log('Legend group added at (400,', svg.attr("height") - 50, ')');
+    
     // Create color swatches for each category
-    categories.forEach((category, index) => {
-        legend.append("rect")
-            .attr("x", 0)
-            .attr("y", index * legendHeight)
-            .attr("width", legendWidth)
-            .attr("height", legendHeight)
-            .style("fill", colorScale(category))
-            .style("stroke", "#333");
-    });
-
+    legend.selectAll("rect")
+        .data(categories)
+        .enter()
+        .append("rect")
+        .attr("x", 0)
+        .attr("y", (d, i) => i * legendHeight)
+        .attr("width", legendWidth)
+        .attr("height", legendHeight)
+        .style("fill", d => colorScale(d))
+        .style("stroke", "#333");
+    
     // Add labels to the legend
     legend.selectAll("text")
         .data(categories)
@@ -290,4 +300,7 @@ function addCategoricalLegend(svg, colorScale, width) {
         .attr("alignment-baseline", "middle")
         .text(d => `${d}%`)
         .style("font-size", "12px");
+
+    // Add debugging: Check if legend elements are added
+    console.log('Legend elements added.');
 }
