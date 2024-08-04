@@ -220,7 +220,7 @@ function addHorizontalLegend(svg, colorScale, width) {
 
     const legend = svg.append("g")
         .attr("class", "legend")
-        .attr("transform", `translate(${width / 2 - legendWidth / 2 + 50}, ${svg.attr("height") - 50})`);
+        .attr("transform", `translate(${50 + width / 2 - legendWidth / 2}, ${svg.attr("height") - 50})`);
 
     // Add a color gradient bar
     const gradient = svg.append("defs")
