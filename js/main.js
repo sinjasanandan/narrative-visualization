@@ -129,7 +129,6 @@
 
 
 
-
 Promise.all([
     d3.csv("Final.csv"),
     d3.json("countries.geojson")
@@ -140,27 +139,22 @@ Promise.all([
     // Create a map of country codes to internet usage percentages
     const internetUsageMap = new Map(latestData.map(d => [d.Code, +d['Internet Users(%)']]));
 
-
-
     // Define a color scale
     const colorScale = d3.scaleSequential(d3.interpolateBlues)
         .domain([0, d3.max(Array.from(internetUsageMap.values()))]);
 
-
     // Render the map and legend
     const svg = createChoropleth(geoData, internetUsageMap);
-    // addHorizontalLegend(svg, d3.scaleSequential(d3.interpolateBlues)
-    //     .domain([0, d3.max(Array.from(internetUsageMap.values()))]), svg.attr("width"));
     addCategoricalLegend(svg, colorScale, svg.attr("width"));
 });
 
 function createChoropleth(geoData, internetUsageMap) {
     const width = 1000;
-    const height = 640;
+    const height = 600;
 
     const svg = d3.select("#choropleth-map")
         .append("svg")
-        .attr("width", width)
+        .attr("width", width + 300) // Increase width to accommodate legend
         .attr("height", height);
 
     // Define a projection and path generator
@@ -183,7 +177,6 @@ function createChoropleth(geoData, internetUsageMap) {
         })
         .attr("stroke", "#333")
         .attr("stroke-width", 0.5);
-
 
     svg.append("g")
         .selectAll("path")
@@ -221,51 +214,6 @@ function createChoropleth(geoData, internetUsageMap) {
     return svg;
 }
 
-function addHorizontalLegend(svg, colorScale, width) {
-    const legendHeight = 20;
-    const legendWidth = 300; // Adjust as needed
-
-    const legend = svg.append("g")
-        .attr("class", "legend")
-        .attr("transform", `translate(400, 570)`);
-
-    // Add a color gradient bar
-    const gradient = svg.append("defs")
-        .append("linearGradient")
-        .attr("id", "horizontal-gradient")
-        .attr("x1", "0%")
-        .attr("y1", "0%")
-        .attr("x2", "100%")
-        .attr("y2", "0%");
-
-    gradient.append("stop")
-        .attr("offset", "0%")
-        .attr("stop-color", colorScale(colorScale.domain()[0]));
-
-    gradient.append("stop")
-        .attr("offset", "100%")
-        .attr("stop-color", colorScale(colorScale.domain()[1]));
-
-    legend.append("rect")
-        .attr("width", legendWidth)
-        .attr("height", legendHeight)
-        .style("fill", "url(#horizontal-gradient)");
-
-    // Add an axis for the legend
-    const legendScale = d3.scaleLinear()
-        .domain(colorScale.domain())
-        .range([0, legendWidth]);
-
-    const legendAxis = d3.axisBottom(legendScale)
-        .ticks(5)
-        .tickFormat(d => `${d}%`);
-
-    legend.append("g")
-        .attr("transform", `translate(0, ${legendHeight})`)
-        .call(legendAxis);
-}
-
-
 function addCategoricalLegend(svg, colorScale, width) {
     const legendWidth = 300; // Width of the legend
     const legendHeight = 20; // Height of each swatch
@@ -274,7 +222,7 @@ function addCategoricalLegend(svg, colorScale, width) {
     // Position the legend outside the map
     const legend = svg.append("g")
         .attr("class", "legend")
-        .attr("transform", `translate(${width - legendWidth - 50}, ${height + 20})`);
+        .attr("transform", `translate(${width + 50}, 50)`); // Position to the right of the map
 
     // Create color swatches for each category
     legend.selectAll("rect")
