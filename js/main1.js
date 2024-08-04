@@ -272,17 +272,23 @@ function createBubbleChart(data) {
         .attr("cy", d => yScale(d['Internet Users(%)']))
         .attr("r", d => rScale(d.Population))
         .attr("fill", d => colorScale(d.Region))
-        .attr("opacity", 0.7);
+        .attr("opacity", 0.7)
+        .attr("stroke", "#fff")  // Add white border/outline
+        .attr("stroke-width", 1.5);
 
     // Add tooltip behavior
     const tooltip = d3.select("body").append("div")
         .attr("class", "tooltip")
         .style("opacity", 0);
 
+
     svg.selectAll(".bubble")
         .on("mouseover", function(event, d) {
+            const internetUsage = d['Internet Users(%)'].toFixed(2);
+            const formattedPopulation = d.Population.toLocaleString();
+
             tooltip.transition().duration(200).style("opacity", .9);
-            tooltip.html(`${d.Entity}<br>GDP: $${d['GDP ($ per capita)']}<br>Internet Usage: ${d['Internet Users(%)']}%<br>Population: ${d.Population}`)
+            tooltip.html(`${d.Entity}<br>GDP per capita: $${d['GDP ($ per capita)']}<br>Internet Usage: ${internetUsage}%<br>Population: ${formattedPopulation}`)
                 .style("left", (event.pageX + 5) + "px")
                 .style("top", (event.pageY - 28) + "px");
         })
