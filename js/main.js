@@ -149,7 +149,7 @@ Promise.all([
 
 function createChoropleth(geoData, internetUsageMap) {
     const width = 1000;
-    const height = 620;
+    const height = 640;
 
     const svg = d3.select("#choropleth-map")
         .append("svg")
@@ -220,7 +220,7 @@ function addHorizontalLegend(svg, colorScale, width) {
 
     const legend = svg.append("g")
         .attr("class", "legend")
-        .attr("transform", `translate(${width / 2 - legendWidth / 2}, ${svg.attr("height") - 50})`);
+        .attr("transform", `translate(${width / 2 - legendWidth / 2 + 50}, ${svg.attr("height") - 50})`);
 
     // Add a color gradient bar
     const gradient = svg.append("defs")
