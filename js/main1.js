@@ -9,6 +9,8 @@ d3.csv("Final.csv").then(data => {
     // Create a list of unique countries
     const countries = [...new Set(data.map(d => d.Entity))];
 
+    addAnnotations();
+
     // Create the dropdown menu
     d3.select("#dropdown")
         .selectAll("option")
@@ -25,7 +27,6 @@ d3.csv("Final.csv").then(data => {
     // Initialize the chart with the default country
     updateChart(defaultCountry, data);
 
-    addAnnotations();
 
     // Update the chart when a new country is selected
     d3.select("#dropdown").on("change", function() {
