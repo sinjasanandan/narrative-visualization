@@ -48,57 +48,49 @@ const svg = d3.select("#chart")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-    var annotations = [
-        {
-            note: {
-                label: "This narrative visualization explores the adoption of the Internet worldwide since its invention in 1983.",
-                align: "middle",
-                wrap: 200
-            },
-            x: width / 2,
-            y: margin.top - 50,
-            dx: 0,
-            dy: 0,
-            color: "black",
-            type: d3.annotationLabel
+var annotations = [
+    {
+        note: {
+            label: "This narrative visualization explores the adoption of the Internet worldwide since its invention in 1983.",
+            align: "middle",
+            wrap: 200
         },
-        {
-            note: {
-                label: "In this line graph, you can observe the progression of Internet usage as a percentage of a country's population from 1990 to the present.",
-                align: "middle",
-                wrap: 200
-            },
-            x: width / 2,
-            y: margin.top + 20,
-            dx: 0,
-            dy: 0,
-            color: "black",
-            type: d3.annotationLabel
+        x: width / 2,
+        y: margin.top - 50,
+        dx: 0,
+        dy: 0,
+        color: "black",
+        type: d3.annotationLabel
+    },
+    {
+        note: {
+            label: "In this line graph, you can observe the progression of Internet usage as a percentage of a country's population from 1990 to the present.",
+            align: "middle",
+            wrap: 200
         },
-        {
-            note: {
-                label: "Use the dropdown menu to select a specific country and view its Internet usage trends.",
-                align: "middle",
-                wrap: 200
-            },
-            x: width / 2,
-            y: height - margin.bottom + 60,
-            dx: 0,
-            dy: 0,
-            color: "black",
-            type: d3.annotationLabel
-        }
-    ];
+        x: width / 2,
+        y: margin.top + 20,
+        dx: 0,
+        dy: 0,
+        color: "black",
+        type: d3.annotationLabel
+    },
+    {
+        note: {
+            label: "Use the dropdown menu to select a specific country and view its Internet usage trends.",
+            align: "middle",
+            wrap: 200
+        },
+        x: width / 2,
+        y: height - margin.bottom + 60,
+        dx: 0,
+        dy: 0,
+        color: "black",
+        type: d3.annotationLabel
+    }
+];
     
-    // Create the annotation object
-    var makeAnnotations = d3.annotation()
-        .type(d3.annotationLabel)
-        .annotations(annotations);
     
-    // Append the annotations to the SVG
-    svg.append("g")
-        .attr("class", "annotation-group")
-        .call(makeAnnotations);
 
 // Define scales for the line chart
 const xScale = d3.scaleLinear().range([0, width]);
@@ -147,6 +139,17 @@ const tooltip = d3.select("body").append("div")
     .style("border", "1px solid #d3d3d3")
     .style("padding", "5px")
     .style("border-radius", "3px");
+
+
+// Create the annotation object
+var makeAnnotations = d3.annotation()
+.type(d3.annotationLabel)
+.annotations(annotations);
+
+// Append the annotations to the SVG
+svg.append("g")
+    .attr("class", "annotation-group")
+    .call(makeAnnotations);
 
 // Function to update the line chart based on the selected country
 function updateChart(country, data) {
@@ -342,6 +345,8 @@ function createBubbleChart(data) {
 
 
 
+
+
 // Choropleth map
 Promise.all([
     d3.csv("Final.csv"),
@@ -364,7 +369,7 @@ Promise.all([
     const svg = createChoropleth(geoData, internetUsageMap);
     // addHorizontalLegend(svg, d3.scaleSequential(d3.interpolateBlues)
     //     .domain([0, d3.max(Array.from(internetUsageMap.values()))]), svg.attr("width"));
-    addCategoricalLegend(svg, colorScale, svg.attr("width"));
+    // addCategoricalLegend(svg, colorScale, svg.attr("width"));
 });
 
 function createChoropleth(geoData, internetUsageMap) {
