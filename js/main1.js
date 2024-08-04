@@ -221,7 +221,7 @@ function createBubbleChart(data) {
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     // Define scales
-    const xScale = d3.scaleLinear()
+    const xScale = d3.scaleLog()
         .domain([0, d3.max(data, d => d['GDP ($ per capita)'])])
         .range([0, width]);
 
