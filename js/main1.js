@@ -169,12 +169,12 @@ function updateChart(country, data) {
 }
 
 function addAnnotations() {
-    const annotationsDiv = d3.select("#line-chart-container")
-        .append("div")
-        .attr("class", "annotations");
+    const annotationsDiv = d3.select("#annotations-container");
 
     annotationsDiv.html(`
-        <p>This narrative visualization explores the adoption of the Internet worldwide since its invention in 1983. The Internet has transformed the way people access information and communicate globally.</p>
+        <div class="annotation-box">
+            <p>This narrative visualization explores the adoption of the Internet worldwide since its invention in 1983. The Internet has transformed the way people access information and communicate globally.</p>
+        </div>
         <p>In this line graph, you can observe the progression of Internet usage as a percentage of a country's population from 1990 to the present. The graph illustrates how Internet adoption has evolved over time in different countries.</p>
         <p>Use the dropdown menu to select a specific country and view its Internet usage trends. This allows you to compare how different countries have embraced Internet technology over the years.</p>
         <p>Notice the trends and patterns in Internet adoption. Some countries may show rapid growth, while others may have slower or more gradual increases. These patterns can reflect various factors such as technological infrastructure, economic conditions, and government policies.</p>
@@ -182,6 +182,7 @@ function addAnnotations() {
         <p>When you're ready, click the 'Show Next' button to move to the next visualization, which will provide a geographic perspective on Internet usage through a choropleth map.</p>
     `);
 }
+
 
 
 
