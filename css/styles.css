@@ -40,3 +40,9 @@ button {
     padding: 10px;
     border-radius: 5px;
 }
+
+.annotation-icon {
+    margin-right: 8px; /* Space between the icon and the text */
+    color: #007bff; /* Icon color */
+}
+

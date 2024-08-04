@@ -173,13 +173,17 @@ function addAnnotations() {
 
     annotationsDiv.html(`
         <div class="annotation-box">
-            <p>This narrative visualization explores the adoption of the Internet worldwide since its invention in 1983. The Internet has transformed the way people access information and communicate globally.</p>
+            <p>The Internet has transformed the way people access information and communicate globally. This narrative visualization explores the adoption of the Internet around the world since it was invented in 1983. </p>
         </div>
-        <p>In this line graph, you can observe the progression of Internet usage as a percentage of a country's population from 1990 to the present. The graph illustrates how Internet adoption has evolved over time in different countries.</p>
-        <p>Use the dropdown menu to select a specific country and view its Internet usage trends. This allows you to compare how different countries have embraced Internet technology over the years.</p>
-        <p>Notice the trends and patterns in Internet adoption. Some countries may show rapid growth, while others may have slower or more gradual increases. These patterns can reflect various factors such as technological infrastructure, economic conditions, and government policies.</p>
-        <p>Hover over the data points to view precise details about Internet usage for each year. Each tooltip will show the exact year and the percentage of the population using the Internet.</p>
-        <p>When you're ready, click the 'Show Next' button to move to the next visualization, which will provide a geographic perspective on Internet usage through a choropleth map.</p>
+        <p>In this line graph, you can observe the progression of a country's population's Internet usage from 1980 to the present. The graph illustrates how Internet adoption has evolved over time in different countries.</p>
+        <div class="annotation-box">
+            <p><i class="fas fa-info-circle annotation-icon"></i>Use the dropdown menu to select a specific country and view its Internet usage trends. This allows you to compare how different countries have embraced Internet technology over the years.</p>
+        </div>
+        <p>Some countries may show rapid growth, while others may have slower or more gradual increases. These patterns can reflect various factors such as technological infrastructure, economic conditions, and government policies.</p>
+        <div class="annotation-box">
+            <p><i class="fas fa-info-circle annotation-icon"></i>Hover over the data points to view details about Internet usage for each year.</p>
+        </div>
+        <p>Click the 'Show Next' button to move to the next slide, which shows a geographic representation on Internet usage throughout the world through a choropleth map.</p>
     `);
 }
 
