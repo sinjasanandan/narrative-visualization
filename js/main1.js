@@ -173,17 +173,18 @@ function addLineAnnotations() {
 
     annotationsDiv.html(`
         <p>The Internet has transformed the way people access information and communicate globally. This narrative visualization explores the adoption of the Internet around the world since it was invented in 1983. </p>
-        <p>In this line graph, you can observe the progression of a country's population's Internet usage from 1980 to the present. The graph illustrates how Internet adoption has evolved over time in different countries.</p>
+        <p>In this line graph, you can observe the progression of a country's population's Internet usage from 1980 to 2020. The graph illustrates how Internet adoption has evolved over time in different countries.</p>
         <div class="annotation-box">
-            <p><i class="fas fa-info-circle annotation-icon"></i>Use the dropdown menu to select a specific country and view its population's Internet usage trend.</p>
+            <p><i class="fas fa-info-circle annotation-icon"></i>Use the dropdown menu to select a country and view its population's Internet usage trend.</p>
         </div>
         <p>Some countries may show rapid growth, while others may have slower or more gradual increases. These patterns can reflect various factors such as technological infrastructure, economic conditions, and government policies.</p>
         <div class="annotation-box">
-            <p><i class="fas fa-info-circle annotation-icon"></i>Hover over the data points to see the percentage of the selected country's population that utilized the Internet for that year..</p>
+            <p><i class="fas fa-info-circle annotation-icon"></i>Hover over the data points to see the percentage of the selected country's population that utilized the Internet for that year.</p>
         </div>
         <p>Click the 'Show Next' button to move to the next slide, which shows a geographic representation on Internet usage throughout the world through a choropleth map.</p>
     `);
 }
+
 
 
 
@@ -338,7 +339,7 @@ Promise.all([
     // Create a map of country codes to internet usage percentages
     const internetUsageMap = new Map(latestData.map(d => [d.Code, +d['Internet Users(%)']]));
 
-
+    addMapAnnotations();
 
     // Define a color scale
     const colorScale = d3.scaleSequential(d3.interpolateBlues)
@@ -417,6 +418,23 @@ function createChoropleth(geoData, internetUsageMap) {
 
     return svg;
 }
+
+
+function addMapAnnotations() {
+    const annotationsDiv = d3.select("#map-annotations-container");
+
+    annotationsDiv.html(`
+        <p>The choropleth map provides a geographical representation of Internet usage across the world. Countries are color-coded based on their population's Internet usage percentage, helping visualize regions with high or low Internet penetration.</p>
+        
+        <div class="annotation-box">
+            <p><i class="fas fa-info-circle annotation-icon"></i>Hover over any country to see its % Internet usage.</p>
+        </div>
+        
+        <p>Click 'Show Next' to see how economic factors can compare to Internet usage rates.</p>
+    `);
+}
+
+
 
 
 
