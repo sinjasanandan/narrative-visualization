@@ -170,8 +170,6 @@ function updateChart(country, data) {
 
 
 
-
-
 // Load and process the bubble chart data
 Promise.all([
     d3.csv("Final.csv"),
@@ -189,6 +187,7 @@ Promise.all([
         d.Population = +d.Population;
         d['GDP ($ per capita)'] = +d['GDP ($ per capita)'];
         d['Literacy (%)'] = +d['Literacy (%)'];
+        d.Region = d.Region.trim(); // Trim spaces
     });
 
     // Merge the datasets by country
@@ -199,9 +198,6 @@ Promise.all([
 
     // Filter to get the most recent data per country
     const latestData = d3.rollups(mergedData, v => v.sort((a, b) => b.Year - a.Year)[0], d => d.Entity).map(d => d[1]);
-    // console.log(latestData); 
-
-    addBubbleAnnotations();
 
     // Create the Bubble Chart
     createBubbleChart(latestData);
@@ -234,6 +230,10 @@ function createBubbleChart(data) {
     const rScale = d3.scaleSqrt()
         .domain([0, d3.max(data, d => d.Population)])
         .range([5, 30]);
+
+    // Define color scale for regions
+    const colorScale = d3.scaleOrdinal(d3.schemeCategory10)
+        .domain(data.map(d => d.Region));
 
     // Define axes
     const xAxis = d3.axisBottom(xScale);
@@ -271,7 +271,7 @@ function createBubbleChart(data) {
         .attr("cx", d => xScale(d['GDP ($ per capita)']))
         .attr("cy", d => yScale(d['Internet Users(%)']))
         .attr("r", d => rScale(d.Population))
-        .attr("fill", "steelblue")
+        .attr("fill", d => colorScale(d.Region))
         .attr("opacity", 0.7);
 
     // Add tooltip behavior
@@ -289,7 +289,35 @@ function createBubbleChart(data) {
         .on("mouseout", function() {
             tooltip.transition().duration(500).style("opacity", 0);
         });
+
+    // Add a legend for regions
+    const legend = svg.append("g")
+        .attr("class", "legend")
+        .attr("transform", "translate(" + (width - 150) + "," + 10 + ")");
+
+    const regions = colorScale.domain();
+
+    regions.forEach((region, i) => {
+        const legendRow = legend.append("g")
+            .attr("transform", "translate(0," + (i * 20) + ")");
+
+        legendRow.append("rect")
+            .attr("width", 10)
+            .attr("height", 10)
+            .attr("fill", colorScale(region));
+
+        legendRow.append("text")
+            .attr("x", 20)
+            .attr("y", 10)
+            .attr("dy", "0.35em")
+            .text(region)
+            .style("text-anchor", "start")
+            .style("font-size", "12px");
+    });
 }
+
+
+
 
 
 
@@ -334,7 +362,7 @@ function createChoropleth(geoData, internetUsageMap) {
     // Define a projection and path generator
     // const projection = d3.geoMercator().scale(150).translate([width / 2, height / 1.4]);
     const projection = d3.geoMercator()
-        .scale(width / 6.3) // Adjusted scale for better fit
+        .scale(width / 6.5) // Adjusted scale for better fit
         .translate([width / 2, height / 1.5]); // Adjusted translation for better centering
 
     const path = d3.geoPath().projection(projection);
