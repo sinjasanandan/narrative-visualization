@@ -324,7 +324,7 @@ Promise.all([
 
 function createChoropleth(geoData, internetUsageMap) {
     const width = 800; // Same width as the other charts
-    const height = 400; // Same height as the other charts
+    const height = 600; // Same height as the other charts
 
     const svg = d3.select("#choropleth-map")
         .append("svg")
@@ -332,7 +332,11 @@ function createChoropleth(geoData, internetUsageMap) {
         .attr("height", height);
 
     // Define a projection and path generator
-    const projection = d3.geoMercator().scale(150).translate([width / 2, height / 1.4]);
+    // const projection = d3.geoMercator().scale(150).translate([width / 2, height / 1.4]);
+    const projection = d3.geoMercator()
+        .scale(width / 6.3) // Adjusted scale for better fit
+        .translate([width / 2, height / 1.5]); // Adjusted translation for better centering
+
     const path = d3.geoPath().projection(projection);
 
     // Define a color scale
