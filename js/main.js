@@ -14,7 +14,7 @@ Promise.all([
 
 function createChoropleth(geoData, internetUsageMap) {
     const width = 1000;
-    const height = 1000;
+    const height = 2000;
 
     const svg = d3.select("#choropleth-map")
         .append("svg")
