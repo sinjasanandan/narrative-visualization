@@ -47,6 +47,59 @@ const svg = d3.select("#chart")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+
+    var annotations = [
+        {
+            note: {
+                label: "This narrative visualization explores the adoption of the Internet worldwide since its invention in 1983.",
+                align: "middle",
+                wrap: 200
+            },
+            x: width / 2,
+            y: margin.top - 50,
+            dx: 0,
+            dy: 0,
+            color: "black",
+            type: d3.annotationLabel
+        },
+        {
+            note: {
+                label: "In this line graph, you can observe the progression of Internet usage as a percentage of a country's population from 1990 to the present.",
+                align: "middle",
+                wrap: 200
+            },
+            x: width / 2,
+            y: margin.top + 20,
+            dx: 0,
+            dy: 0,
+            color: "black",
+            type: d3.annotationLabel
+        },
+        {
+            note: {
+                label: "Use the dropdown menu to select a specific country and view its Internet usage trends.",
+                align: "middle",
+                wrap: 200
+            },
+            x: width / 2,
+            y: height - margin.bottom + 60,
+            dx: 0,
+            dy: 0,
+            color: "black",
+            type: d3.annotationLabel
+        }
+    ];
+    
+    // Create the annotation object
+    var makeAnnotations = d3.annotation()
+        .type(d3.annotationLabel)
+        .annotations(annotations);
+    
+    // Append the annotations to the SVG
+    svg.append("g")
+        .attr("class", "annotation-group")
+        .call(makeAnnotations);
+
 // Define scales for the line chart
 const xScale = d3.scaleLinear().range([0, width]);
 const yScale = d3.scaleLinear().range([height, 0]);
