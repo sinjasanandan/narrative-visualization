@@ -271,13 +271,11 @@ function addCategoricalLegend(svg, colorScale, width) {
     const legendHeight = 20; // Height of each swatch
     const categories = [0, 20, 40, 60, 80, 100]; // Define the percentage categories
     
+    // Position the legend outside the map
     const legend = svg.append("g")
         .attr("class", "legend")
-        .attr("transform", `translate(400, ${svg.attr("height") - 50})`);
+        .attr("transform", `translate(${width - legendWidth - 50}, ${height + 20})`);
 
-    // Add debugging: Check if legend group is added
-    console.log('Legend group added at (400,', svg.attr("height") - 50, ')');
-    
     // Create color swatches for each category
     legend.selectAll("rect")
         .data(categories)
@@ -289,7 +287,7 @@ function addCategoricalLegend(svg, colorScale, width) {
         .attr("height", legendHeight)
         .style("fill", d => colorScale(d))
         .style("stroke", "#333");
-    
+
     // Add labels to the legend
     legend.selectAll("text")
         .data(categories)
@@ -300,7 +298,4 @@ function addCategoricalLegend(svg, colorScale, width) {
         .attr("alignment-baseline", "middle")
         .text(d => `${d}%`)
         .style("font-size", "12px");
-
-    // Add debugging: Check if legend elements are added
-    console.log('Legend elements added.');
 }
