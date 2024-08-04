@@ -142,13 +142,14 @@ Promise.all([
 
     // Render the map and legend
     const svg = createChoropleth(geoData, internetUsageMap);
-    addVerticalLegend(svg, d3.scaleSequential(d3.interpolateBlues)
+    addHorizontalLegend(svg, d3.scaleSequential(d3.interpolateBlues)
         .domain([0, d3.max(Array.from(internetUsageMap.values()))]), svg.attr("width"));
+
 });
 
 function createChoropleth(geoData, internetUsageMap) {
     const width = 1000;
-    const height = 550;
+    const height = 600;
 
     const svg = d3.select("#choropleth-map")
         .append("svg")
@@ -213,25 +214,21 @@ function createChoropleth(geoData, internetUsageMap) {
     return svg;
 }
 
-function addVerticalLegend(svg, colorScale, width) {
-    const legendHeight = 200;
-    const legendWidth = 20;
+function addHorizontalLegend(svg, colorScale, width) {
+    const legendHeight = 20;
+    const legendWidth = 300; // Adjust as needed
 
     const legend = svg.append("g")
         .attr("class", "legend")
-        .attr("transform", `translate(${width - legendWidth - 40}, 100)`);
-
-    const legendScale = d3.scaleLinear()
-        .domain(colorScale.domain())
-        .range([legendHeight, 0]);
+        .attr("transform", `translate(${width / 2 - legendWidth / 2}, ${svg.attr("height") - 50})`);
 
     // Add a color gradient bar
     const gradient = svg.append("defs")
         .append("linearGradient")
-        .attr("id", "gradient")
+        .attr("id", "horizontal-gradient")
         .attr("x1", "0%")
-        .attr("y1", "100%")
-        .attr("x2", "0%")
+        .attr("y1", "0%")
+        .attr("x2", "100%")
         .attr("y2", "0%");
 
     gradient.append("stop")
@@ -245,14 +242,18 @@ function addVerticalLegend(svg, colorScale, width) {
     legend.append("rect")
         .attr("width", legendWidth)
         .attr("height", legendHeight)
-        .style("fill", "url(#gradient)");
+        .style("fill", "url(#horizontal-gradient)");
 
     // Add an axis for the legend
-    const legendAxis = d3.axisRight(legendScale)
+    const legendScale = d3.scaleLinear()
+        .domain(colorScale.domain())
+        .range([0, legendWidth]);
+
+    const legendAxis = d3.axisBottom(legendScale)
         .ticks(5)
         .tickFormat(d => `${d}%`);
 
     legend.append("g")
-        .attr("transform", `translate(${legendWidth}, 0)`)
+        .attr("transform", `translate(0, ${legendHeight})`)
         .call(legendAxis);
 }
