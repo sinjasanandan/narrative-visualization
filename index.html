@@ -4,32 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Worldwide Internet Usage</title>
-    <h1>Visualizing Worldwide Internet Usage</h1>
-    <style>
-        /* Add your CSS here for styling */
-        .tooltip {
-            position: absolute;
-            background-color: #f9f9f9;
-            border: 1px solid #d3d3d3;
-            padding: 5px;
-            border-radius: 3px;
-            pointer-events: none; /* Ensures the tooltip does not interfere with mouse events */
-        }
-        .x-axis-label, .y-axis-label {
-            font-size: 14px;
-        }
-        #line-chart-container, #bubble-chart-container, #choropleth-map-container {
-            width: 800px;
-            height: 600px;
-            margin: auto;
-        }
-        button {
-            display: block;
-            margin: 20px auto;
-        }
-    </style>
+
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+    <h1>Visualizing Worldwide Internet Usage</h1>
+
+    <div id="annotations-container"></div>
+
     <!-- Line Chart Container -->
     <div id="line-chart-container">
         <div id="chart"></div>

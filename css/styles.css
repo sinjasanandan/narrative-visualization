@@ -1,0 +1,42 @@
+/* Tooltip styles */
+.tooltip {
+    position: absolute;
+    background-color: #f9f9f9;
+    border: 1px solid #d3d3d3;
+    padding: 5px;
+    border-radius: 3px;
+    pointer-events: none; /* Ensures the tooltip does not interfere with mouse events */
+}
+
+/* Axis label styles */
+.x-axis-label, .y-axis-label {
+    font-size: 14px;
+}
+
+/* Chart container styles */
+#line-chart-container, #bubble-chart-container, #choropleth-map-container {
+    width: 800px;
+    height: 600px;
+    margin: auto;
+}
+
+/* Button styles */
+button {
+    display: block;
+    margin: 20px auto;
+}
+
+/* Additional styles for the annotations container */
+#annotations-container {
+    width: 800px;
+    margin: 20px auto;
+    padding: 10px;
+}
+
+/* Styles for annotation box */
+.annotation-box {
+    background-color: #f0f8ff; /* Light blue background */
+    border: 1px solid #d3d3d3;
+    padding: 10px;
+    border-radius: 5px;
+}
