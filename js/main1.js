@@ -1,7 +1,6 @@
 // Load and process the line chart data
 d3.csv("Final.csv").then(data => {
     // Parse the data
-    // console.log(data); 
     data.forEach(d => {
         d.Year = +d.Year;
         d['Internet Users(%)'] = +d['Internet Users(%)'];
@@ -29,7 +28,6 @@ d3.csv("Final.csv").then(data => {
     // Update the chart when a new country is selected
     d3.select("#dropdown").on("change", function() {
         const selectedCountry = d3.select(this).property("value");
-        // console.log("Selected country:", selectedCountry);
         updateChart(selectedCountry, data);
     });
 });
@@ -46,51 +44,6 @@ const svg = d3.select("#chart")
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-
-var annotations = [
-    {
-        note: {
-            label: "This narrative visualization explores the adoption of the Internet worldwide since its invention in 1983.",
-            align: "middle",
-            wrap: 200
-        },
-        x: width / 2,
-        y: margin.top - 50,
-        dx: 0,
-        dy: 0,
-        color: "black",
-        type: d3.annotationLabel
-    },
-    {
-        note: {
-            label: "In this line graph, you can observe the progression of Internet usage as a percentage of a country's population from 1990 to the present.",
-            align: "middle",
-            wrap: 200
-        },
-        x: width / 2,
-        y: margin.top + 20,
-        dx: 0,
-        dy: 0,
-        color: "black",
-        type: d3.annotationLabel
-    },
-    {
-        note: {
-            label: "Use the dropdown menu to select a specific country and view its Internet usage trends.",
-            align: "middle",
-            wrap: 200
-        },
-        x: width / 2,
-        y: height - margin.bottom + 60,
-        dx: 0,
-        dy: 0,
-        color: "black",
-        type: d3.annotationLabel
-    }
-];
-    
-    
 
 // Define scales for the line chart
 const xScale = d3.scaleLinear().range([0, width]);
@@ -140,13 +93,54 @@ const tooltip = d3.select("body").append("div")
     .style("padding", "5px")
     .style("border-radius", "3px");
 
+// Define annotations
+const annotations = [
+    {
+        note: {
+            label: "This narrative visualization explores the adoption of the Internet worldwide since its invention in 1983.",
+            align: "middle",
+            wrap: 200
+        },
+        x: width / 2,
+        y: -30,
+        dx: 0,
+        dy: 0,
+        color: "black",
+        type: d3.annotationLabel
+    },
+    {
+        note: {
+            label: "In this line graph, you can observe the progression of Internet usage as a percentage of a country's population from 1990 to the present.",
+            align: "middle",
+            wrap: 200
+        },
+        x: width / 2,
+        y: height / 2,
+        dx: 0,
+        dy: 0,
+        color: "black",
+        type: d3.annotationLabel
+    },
+    {
+        note: {
+            label: "Use the dropdown menu to select a specific country and view its Internet usage trends.",
+            align: "middle",
+            wrap: 200
+        },
+        x: width - 100,
+        y: height - 50,
+        dx: 0,
+        dy: 0,
+        color: "black",
+        type: d3.annotationLabel
+    }
+];
 
-// Create the annotation object
-var makeAnnotations = d3.annotation()
-.type(d3.annotationLabel)
-.annotations(annotations);
+// Create and append annotations
+const makeAnnotations = d3.annotation()
+    .type(d3.annotationLabel)
+    .annotations(annotations);
 
-// Append the annotations to the SVG
 svg.append("g")
     .attr("class", "annotation-group")
     .call(makeAnnotations);
@@ -222,6 +216,7 @@ function updateChart(country, data) {
             tooltip.transition().duration(500).style("opacity", 0);
         });
 }
+
 
 
 
