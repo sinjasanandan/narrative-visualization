@@ -168,25 +168,6 @@ function updateChart(country, data) {
         });
 }
 
-function addLineAnnotations() {
-    const annotationsDiv = d3.select("#line-annotations-container");
-
-    annotationsDiv.html(`
-        <p>The Internet has transformed the way people access information and communicate globally. This narrative visualization explores the adoption of the Internet around the world since it was invented in 1983. </p>
-        <p>In this line graph, you can observe the progression of a country's population's Internet usage from 1980 to 2020. The graph illustrates how Internet adoption has evolved over time in different countries.</p>
-        <div class="annotation-box">
-            <p><i class="fas fa-info-circle annotation-icon"></i>Use the dropdown menu to select a country and view its population's Internet usage trend.</p>
-        </div>
-        <p>Some countries may show rapid growth, while others may have slower or more gradual increases. These patterns can reflect various factors such as technological infrastructure, economic conditions, and government policies.</p>
-        <div class="annotation-box">
-            <p><i class="fas fa-info-circle annotation-icon"></i>Hover over the data points to see the percentage of the selected country's population that utilized the Internet for that year.</p>
-        </div>
-        <p>Click the 'Show Next' button to move to the next slide, which shows a geographic representation on Internet usage throughout the world through a choropleth map.</p>
-    `);
-}
-
-
-
 
 
 
@@ -310,18 +291,6 @@ function createBubbleChart(data) {
         });
 }
 
-function addBubbleAnnotations() {
-    const annotationsDiv = d3.select("#bubble-annotations-container");
-
-    annotationsDiv.html(`
-        <p>This bubble chart explores the relationship between GDP per capita and Internet usage across various countries. GDP, which reflects a country's economic health, can be a key indicator of a nation's ability to invest in and adopt new technologies. By comparing GDP to Internet usage, we can understand how wealthier nations might be more equipped to implement technological advancements such as Internet infrastructure, while less affluent countries might adopt technology at a different pace. </p>
-        <p>Each bubble on the chart represents a country, with its size indicating population and its position showing relationship between GDP per capita and population's Internet usage.</p>
-        <div class="annotation-box">
-            <p><i class="fas fa-info-circle annotation-icon"></i>Hover over a data points to see information about a country, it's population, GDP per capita, and Internet usage %.</p>
-        </div>
-        <p>Click 'Start Over' to go back to the first slide line graph.</p>
-    `);
-}
 
 
 
@@ -420,17 +389,54 @@ function createChoropleth(geoData, internetUsageMap) {
 }
 
 
+
+
+// Annotation functions
 function addMapAnnotations() {
     const annotationsDiv = d3.select("#map-annotations-container");
 
     annotationsDiv.html(`
-        <p>The choropleth map provides a geographical representation of Internet usage across the world. Countries are color-coded based on their population's Internet usage percentage, helping visualize regions with high or low Internet penetration.</p>
+        <p>The Internet has transformed the way people access information and communicate globally. This narrative visualization explores the adoption of the Internet around the world. </p>
+
+        <p>The choropleth map provides a geographical representation of current Internet usage across the world. Countries are color-coded based on their population's Internet usage percentage, helping visualize regions with high or low Internet penetration.</p>
         
         <div class="annotation-box">
-            <p><i class="fas fa-info-circle annotation-icon"></i>Hover over any country to see its % Internet usage.</p>
+            <p><i class="fas fa-info-circle annotation-icon"></i>Hover over any country to see the % of its population accessing Internet.</p>
         </div>
         
-        <p>Click 'Show Next' to see how economic factors can compare to Internet usage rates.</p>
+        <p>Click 'Show Next' to view country's adoption of Internet usage over time.</p>
+    `);
+}
+
+function addLineAnnotations() {
+    const annotationsDiv = d3.select("#line-annotations-container");
+
+    annotationsDiv.html(`
+        <p>In this line graph, you can observe the progression of a country's population's Internet usage from 1980 to 2020. The graph illustrates how Internet adoption has evolved over time in different countries.</p>
+        <div class="annotation-box">
+            <p><i class="fas fa-info-circle annotation-icon"></i>Use the dropdown menu to select a country and view its population's Internet usage trend.</p>
+        </div>
+        <div class="annotation-box">
+            <p><i class="fas fa-info-circle annotation-icon"></i>Hover over the data points to see the percentage of the selected country's population that utilized the Internet for that year.</p>
+        </div>
+        <p>Some countries may show rapid growth, while others may have slower or more gradual increases. These patterns can reflect various factors such as technological infrastructure, economic conditions, and government policies.</p>
+
+        <p>Click 'Show Next' to move to the next slide, which compares Internet usage to economic condtions.</p>
+    `);
+}
+
+
+function addBubbleAnnotations() {
+    const annotationsDiv = d3.select("#bubble-annotations-container");
+
+    annotationsDiv.html(`
+        <p>This bubble chart explores the relationship between GDP per capita and Internet usage across various countries. GDP, which reflects a country's economic health, can be a key indicator of a nation's ability to invest in and adopt new technologies.</p>
+        <p>By comparing GDP to Internet usage, we can understand how wealthier nations might be more equipped to implement technological advancements such as Internet infrastructure, while less affluent countries might adopt technology at a different pace.</p>
+        <p>Each bubble on the chart represents a country, with its size indicating population and its position showing relationship between GDP per capita and population's Internet usage.</p>
+        <div class="annotation-box">
+            <p><i class="fas fa-info-circle annotation-icon"></i>Hover over a data points to see information about a country, it's population, GDP per capita, and Internet usage %.</p>
+        </div>
+        <p>Click 'Start Over' to go back to the first slide line graph.</p>
     `);
 }
 
@@ -438,8 +444,8 @@ function addMapAnnotations() {
 
 
 
-
-// Add these event listeners after the charts have been created
+// Add these event listeners after the charts have been created 
+// Allow for navigation between slides
 //      <!-- map >> line chart >> bubble >> start from beg -->
 d3.select("#switch-to-line").on("click", function() {
     d3.select("#line-chart-container").style("display", "block");
