@@ -3,33 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exploring Worldwide Internet Usage</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <title>Worldwide Internet Usage</title>
+    <h1>Visualizing Worldwide Internet Usage</h1>
+    <style>
+        /* Add your CSS here for styling */
+        .tooltip {
+            position: absolute;
+            background-color: #f9f9f9;
+            border: 1px solid #d3d3d3;
+            padding: 5px;
+            border-radius: 3px;
+            pointer-events: none; /* Ensures the tooltip does not interfere with mouse events */
+        }
+        .x-axis-label, .y-axis-label {
+            font-size: 14px;
+        }
+        #line-chart-container, #bubble-chart-container {
+            width: 800px;
+            height: 500px;
+            margin: auto;
+        }
+        button {
+            display: block;
+            margin: 20px auto;
+        }
+    </style>
 </head>
 <body>
-    <div id="navigation">
-        <button id="switch-to-line">Show Line Chart</button>
-        <button id="switch-to-bubble" style="display: none;">Show Bubble Chart</button>
-        <button id="switch-to-choropleth">Show Choropleth Map</button>
-    </div>
+    <div id="choropleth-map"></div>
 
+    <!-- Line Chart Container -->
     <div id="line-chart-container">
-        <div id="dropdown-container">
-            <label for="dropdown">Select Country:</label>
-            <select id="dropdown"></select>
-        </div>
         <div id="chart"></div>
+        <select id="dropdown"></select>
     </div>
 
+    <!-- Bubble Chart Container -->
     <div id="bubble-chart-container" style="display: none;">
         <div id="bubble-chart"></div>
     </div>
 
-    <div id="choropleth-map-container" style="display: none;">
-        <div id="choropleth-map"></div>
-    </div>
+    <!-- Navigation Buttons -->
+    <button id="switch-to-bubble">Show Bubble Chart</button>
+    <button id="switch-to-line" style="display: none;">Show Line Chart</button>
 
-    <script src="js/main2.js"></script>
+    <!-- Include D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <!-- Include your JavaScript file -->
+    <script src="js/main1.js"></script>
 </body>
 </html>
