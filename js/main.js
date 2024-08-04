@@ -13,8 +13,8 @@ Promise.all([
 });
 
 function createChoropleth(geoData, internetUsageMap) {
-    const width = 1000;
-    const height = 2000;
+    const width = 960;
+    const height = 500;
 
     const svg = d3.select("#choropleth-map")
         .append("svg")
@@ -24,21 +24,6 @@ function createChoropleth(geoData, internetUsageMap) {
     // Define a projection and path generator
     const projection = d3.geoMercator().scale(150).translate([width / 2, height / 1.4]);
     const path = d3.geoPath().projection(projection);
-
-
-
-    // // Define a projection and path generator
-    // const projection = d3.geoMercator();
-    // const path = d3.geoPath().projection(projection);
-
-    // // Automatically scale and translate the projection to fit the SVG
-    // const bounds = d3.geoPath().projection(projection.fitSize([width, height], geoData)).bounds(geoData);
-    // const scale = 0.95 / Math.max((bounds[1][0] - bounds[0][0]) / width, (bounds[1][1] - bounds[0][1]) / height);
-    // const translate = [(width - scale * (bounds[1][0] + bounds[0][0])) / 2, (height - scale * (bounds[1][1] + bounds[0][1])) / 2];
-
-    // projection.scale(scale).translate(translate);
-
-
 
     // Define a color scale
     const colorScale = d3.scaleSequential(d3.interpolateBlues)
