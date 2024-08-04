@@ -315,8 +315,8 @@ Promise.all([
 });
 
 function createChoropleth(geoData, internetUsageMap) {
-    const width = 1000;
-    const height = 640;
+    const width = 800; // Same width as the other charts
+    const height = 400; // Same height as the other charts
 
     const svg = d3.select("#choropleth-map")
         .append("svg")
@@ -343,7 +343,6 @@ function createChoropleth(geoData, internetUsageMap) {
         })
         .attr("stroke", "#333")
         .attr("stroke-width", 0.5);
-
 
     svg.append("g")
         .selectAll("path")
@@ -380,7 +379,6 @@ function createChoropleth(geoData, internetUsageMap) {
 
     return svg;
 }
-
 
 
 
