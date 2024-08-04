@@ -102,7 +102,7 @@ const annotations = [
             wrap: 200
         },
         x: width / 2,
-        y: -30,
+        y: margin.top - 50,
         dx: 0,
         dy: 0,
         color: "black",
@@ -115,7 +115,7 @@ const annotations = [
             wrap: 200
         },
         x: width / 2,
-        y: height / 2,
+        y: margin.top + 20,
         dx: 0,
         dy: 0,
         color: "black",
@@ -127,8 +127,8 @@ const annotations = [
             align: "middle",
             wrap: 200
         },
-        x: width - 100,
-        y: height - 50,
+        x: width / 2,
+        y: height - margin.bottom + 60,
         dx: 0,
         dy: 0,
         color: "black",
@@ -136,11 +136,12 @@ const annotations = [
     }
 ];
 
-// Create and append annotations
+// Create the annotation object
 const makeAnnotations = d3.annotation()
     .type(d3.annotationLabel)
     .annotations(annotations);
 
+// Append the annotations to the SVG
 svg.append("g")
     .attr("class", "annotation-group")
     .call(makeAnnotations);
@@ -154,8 +155,6 @@ function updateChart(country, data) {
         console.log("No data found for country:", country);
         return;
     }
-
-    console.log("Filtered data for", country, ":", filteredData);
 
     // Update scales
     xScale.domain(d3.extent(filteredData, d => d.Year));
@@ -216,6 +215,7 @@ function updateChart(country, data) {
             tooltip.transition().duration(500).style("opacity", 0);
         });
 }
+
 
 
 
