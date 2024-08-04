@@ -142,9 +142,9 @@ Promise.all([
 
     // Render the map and legend
     const svg = createChoropleth(geoData, internetUsageMap);
-    addHorizontalLegend(svg, d3.scaleSequential(d3.interpolateBlues)
-        .domain([0, d3.max(Array.from(internetUsageMap.values()))]), svg.attr("width"));
-
+    // addHorizontalLegend(svg, d3.scaleSequential(d3.interpolateBlues)
+    //     .domain([0, d3.max(Array.from(internetUsageMap.values()))]), svg.attr("width"));
+    addCategoricalLegend(svg, colorScale, svg.attr("width"));
 });
 
 function createChoropleth(geoData, internetUsageMap) {
@@ -220,7 +220,7 @@ function addHorizontalLegend(svg, colorScale, width) {
 
     const legend = svg.append("g")
         .attr("class", "legend")
-        .attr("transform", `translate(${50 + width / 2 - legendWidth / 2}, ${svg.attr("height") - 50})`);
+        .attr("transform", `translate(400, 570)`);
 
     // Add a color gradient bar
     const gradient = svg.append("defs")
@@ -256,4 +256,38 @@ function addHorizontalLegend(svg, colorScale, width) {
     legend.append("g")
         .attr("transform", `translate(0, ${legendHeight})`)
         .call(legendAxis);
+}
+
+
+function addCategoricalLegend(svg, colorScale, width) {
+    const legendWidth = 300; // Width of the legend
+    const legendHeight = 20; // Height of each swatch
+    const categories = [0, 20, 40, 60, 80, 100]; // Define the percentage categories
+    const colorDomain = colorScale.domain();
+    
+    const legend = svg.append("g")
+        .attr("class", "legend")
+        .attr("transform", `translate(${400}, ${svg.attr("height") - 50})`);
+
+    // Create color swatches for each category
+    categories.forEach((category, index) => {
+        legend.append("rect")
+            .attr("x", 0)
+            .attr("y", index * legendHeight)
+            .attr("width", legendWidth)
+            .attr("height", legendHeight)
+            .style("fill", colorScale(category))
+            .style("stroke", "#333");
+    });
+
+    // Add labels to the legend
+    legend.selectAll("text")
+        .data(categories)
+        .enter()
+        .append("text")
+        .attr("x", legendWidth + 5)
+        .attr("y", (d, i) => i * legendHeight + legendHeight / 2)
+        .attr("alignment-baseline", "middle")
+        .text(d => `${d}%`)
+        .style("font-size", "12px");
 }
