@@ -16,7 +16,7 @@
 /* Chart container styles */
 #line-chart-container, #bubble-chart-container, #choropleth-map-container {
     width: 800px;
-    height: 450px;
+    height: 600px;
     margin: auto;
 }
 

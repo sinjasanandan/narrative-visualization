@@ -9,7 +9,7 @@ d3.csv("Final.csv").then(data => {
     // Create a list of unique countries
     const countries = [...new Set(data.map(d => d.Entity))];
 
-    addAnnotations();
+    addLineAnnotations();
 
     // Create the dropdown menu
     d3.select("#dropdown")
@@ -168,8 +168,8 @@ function updateChart(country, data) {
         });
 }
 
-function addAnnotations() {
-    const annotationsDiv = d3.select("#annotations-container");
+function addLineAnnotations() {
+    const annotationsDiv = d3.select("#line-annotations-container");
 
     annotationsDiv.html(`
         <p>The Internet has transformed the way people access information and communicate globally. This narrative visualization explores the adoption of the Internet around the world since it was invented in 1983. </p>
@@ -217,7 +217,10 @@ Promise.all([
 
     // Filter to get the most recent data per country
     const latestData = d3.rollups(mergedData, v => v.sort((a, b) => b.Year - a.Year)[0], d => d.Entity).map(d => d[1]);
-    console.log(latestData); 
+    // console.log(latestData); 
+
+    addBubbleAnnotations();
+
     // Create the Bubble Chart
     createBubbleChart(latestData);
 });
@@ -304,6 +307,19 @@ function createBubbleChart(data) {
         .on("mouseout", function() {
             tooltip.transition().duration(500).style("opacity", 0);
         });
+}
+
+function addBubbleAnnotations() {
+    const annotationsDiv = d3.select("#bubble-annotations-container");
+
+    annotationsDiv.html(`
+        <p>This bubble chart explores the relationship between GDP per capita and Internet usage across various countries. GDP, which reflects a country's economic health, can be a key indicator of a nation's ability to invest in and adopt new technologies. By comparing GDP to Internet usage, we can understand how wealthier nations might be more equipped to implement technological advancements such as Internet infrastructure, while less affluent countries might adopt technology at a different pace. </p>
+        <p>Each bubble on the chart represents a country, with its size indicating population and its position showing relationship between GDP per capita and population's Internet usage.</p>
+        <div class="annotation-box">
+            <p><i class="fas fa-info-circle annotation-icon"></i>Hover over a data points to see information about a country, it's population, GDP per capita, and Internet usage %.</p>
+        </div>
+        <p>Click 'Start Over' to go back to the first slide line graph.</p>
+    `);
 }
 
 
